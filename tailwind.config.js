@@ -4,14 +4,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        syne: ['Syne', 'sans-serif'],
-        mono: ['"DM Mono"', 'monospace'],
+        sans: ['Inter', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        bg: '#0a0a0a',
-        surface: '#111111',
-        border: '#1e1e1e',
-        muted: '#555555',
+        bg: '#040d06',
+        surface: '#09150e',
+        border: '#122c1b',
+        muted: '#c3d6cb',
+        primary: '#34d399',
+        accent: '#059669',
       },
       animation: {
         blink: 'blink 1s step-end infinite',

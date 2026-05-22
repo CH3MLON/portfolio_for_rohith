@@ -46,11 +46,11 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-40 bg-[#0a0a0a]/85 backdrop-blur-md border-b border-border"
+      className="fixed top-0 left-0 right-0 z-40 bg-bg/75 backdrop-blur-md border-b border-border"
     >
       <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="font-syne font-extrabold text-[1.1rem] cursor-pointer" onClick={() => handleScroll('home')}>
-          RK<span className="text-muted">.</span>
+        <div className="font-heading font-extrabold text-[1.2rem] tracking-tight cursor-pointer" onClick={() => handleScroll('home')}>
+          RK<span className="text-primary font-bold">.</span>
         </div>
         
         {/* Desktop Nav */}
@@ -62,13 +62,13 @@ export default function Navbar() {
               <button
                 key={link}
                 onClick={() => handleScroll(id)}
-                className={`relative font-mono text-[0.68rem] uppercase tracking-[0.15em] hover:text-[#f0f0f0] transition-colors ${isActive ? 'text-[#f0f0f0]' : 'text-muted'}`}
+                className={`relative font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] hover:text-white transition-colors ${isActive ? 'text-[#34d399]' : 'text-gray-300'}`}
               >
                 {link}
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute -bottom-1 left-0 right-0 h-[1px] bg-white"
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-primary"
                   />
                 )}
               </button>
@@ -77,14 +77,14 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Hamburger */}
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden text-white hover:text-primary transition-colors" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-[#0a0a0a] border-b border-border p-8 flex flex-col gap-6 shadow-2xl">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-bg/95 backdrop-blur-lg border-b border-border p-8 flex flex-col gap-6 shadow-2xl">
           {links.map((link) => {
             const id = link.toLowerCase();
             const isActive = activeSection === id;
@@ -92,7 +92,7 @@ export default function Navbar() {
               <button
                 key={link}
                 onClick={() => handleScroll(id)}
-                className={`text-left font-mono text-[0.68rem] uppercase tracking-[0.15em] ${isActive ? 'text-white' : 'text-muted'}`}
+                className={`text-left font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] ${isActive ? 'text-[#34d399]' : 'text-gray-300'}`}
               >
                 {link}
               </button>

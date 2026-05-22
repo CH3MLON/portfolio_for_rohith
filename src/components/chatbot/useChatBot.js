@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import portfolio from '../../data/portfolio.js';
 
-const HF_API_URL = 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3';
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 function buildSystemPrompt(data) {
   return `You are Rohith K's personal AI assistant embedded in his portfolio website.
@@ -24,14 +24,7 @@ Coding: LeetCode ${data.coding.leetcode}, Skillrack ${data.coding.skillrack}
 --- END DATA ---`;
 }
 
-function buildPrompt(systemPrompt, history, userMessage) {
-  let prompt = `<s>[INST] ${systemPrompt}\n\nConversation so far:\n`;
-  history.slice(-4).forEach(msg => {
-    prompt += msg.role === 'user' ? `User: ${msg.content}\n` : `Assistant: ${msg.content}\n`;
-  });
-  prompt += `\nUser: ${userMessage} [/INST]`;
-  return prompt;
-}
+
 
 export function useChatBot() {
   const [messages, setMessages] = useState([
@@ -55,40 +48,36 @@ export function useChatBot() {
     setError(null);
 
     try {
-      const prompt = buildPrompt(systemPrompt, messages, trimmed);
-      const res = await fetch(HF_API_URL, {
+      const apiMessages = [
+        { role: 'system', content: systemPrompt },
+        ...messages.slice(-4).map(m => ({ role: m.role, content: m.content })),
+        { role: 'user', content: trimmed }
+      ];
+
+      const res = await fetch(GROQ_API_URL, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_HF_API_KEY}`,
+          'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_new_tokens: 300,
-            temperature: 0.4,
-            return_full_text: false,
-            stop: ["User:", "[INST]"]
-          }
+          model: 'llama-3.1-8b-instant',
+          messages: apiMessages,
+          temperature: 0.4,
+          max_tokens: 300
         })
       });
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        if (res.status === 503) {
-          setError('Model is loading, please try again in 20 seconds.');
-        } else {
-          setError(`API error: ${errData.error || res.statusText}`);
-        }
+        setError(`API error: ${errData.error?.message || res.statusText}`);
         setMessages(prev => prev.slice(0, -1));
         setInput(trimmed);
         return;
       }
 
       const data = await res.json();
-      const reply = Array.isArray(data)
-        ? data[0]?.generated_text?.trim()
-        : data?.generated_text?.trim();
+      const reply = data.choices?.[0]?.message?.content?.trim();
 
       if (!reply) throw new Error('Empty response from model');
 

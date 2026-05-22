@@ -6,7 +6,7 @@ const portfolio = {
   phone: "+91 7305149628",
   github: "https://github.com/CH3MLON",
   linkedin: "https://www.linkedin.com/in/rohith-karthik13012007/",
-  resumeUrl: "/rohith-resume.pdf",
+  resumeUrl: "/pics/autoCV__2_ (4) (1).pdf",
 
   about: `I'm a 2nd-year B.E. CSE (AI & ML) student at Sri Eshwar College of Engineering,
 building production-grade AI systems. I've shipped serverless voice AI, computer vision

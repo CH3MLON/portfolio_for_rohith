@@ -9,7 +9,7 @@ import ChatBot from './components/chatbot/ChatBot';
 
 function App() {
   return (
-    <div className="bg-[#0a0a0a] min-h-screen font-mono text-[#f0f0f0] selection:bg-[#f0f0f0] selection:text-[#0a0a0a] overflow-x-hidden">
+    <div className="min-h-screen font-sans text-[#f0f9f4] overflow-x-hidden">
       <Navbar />
       <main>
         <Hero />
